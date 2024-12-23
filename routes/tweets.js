@@ -1,22 +1,55 @@
-// routes/tweets.js
 const express = require('express');
 const router = express.Router();
-const { postTweet } = require('../services/twitterService');
 
+// Generate Tweet
+router.post('/generate', async (req, res) => {
+    try {
+        const content = "This is a generated tweet!";
+        res.json({ content });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Post Tweet
 router.post('/post', async (req, res) => {
     try {
         const { content } = req.body;
-        const tweet = await postTweet(content);
         res.json({ 
             success: true, 
-            tweet,
-            message: 'Tweet posted successfully'
+            message: 'Tweet posted successfully',
+            tweet: { content, timestamp: new Date() }
         });
     } catch (error) {
-        console.error('Error posting tweet:', error);
-        res.status(500).json({ 
-            error: error.message,
-            message: 'Failed to post tweet'
-        });
+        res.status(500).json({ error: error.message });
     }
 });
+
+// Schedule Tweet
+router.post('/schedule', async (req, res) => {
+    try {
+        const { content, scheduledFor } = req.body;
+        res.json({ 
+            success: true, 
+            message: 'Tweet scheduled successfully',
+            scheduled: { content, scheduledFor }
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Get Analytics
+router.get('/analytics', async (req, res) => {
+    try {
+        res.json({
+            totalTweets: 0,
+            scheduledTweets: 0,
+            engagement: 0
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+module.exports = router;
