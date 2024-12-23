@@ -146,10 +146,10 @@ function App() {
   };
 
   // Load analytics when component mounts
-  React.useEffect(() => {
-    updateAnalytics();
-  }, []);
-
+React.useEffect(() => {
+  updateAnalytics();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
   return (
     <Container maxWidth="lg" sx={{ mt: 4 }}>
       <Typography variant="h4" gutterBottom>
